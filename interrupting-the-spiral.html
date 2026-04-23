@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Interrupting the Spiral | The Liberation Series</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --deep-forest: #1a2e1a;
+  --warm-clay:   #8b4513;
+  --gold:        #c9a84c;
+  --cream:       #f5f0e8;
+  --warm-white:  #faf8f4;
+  --plum:        #4a1942;
+  --sage:        #5a7a4a;
+  --ember:       #c05c2a;
+  --charcoal:    #2c2c2c;
+  --mid:         #6b6b6b;
+  --border:      #e0d8cc;
+  --gold-bg:     #fdf6e3;
+  --plum-bg:     #f5eef5;
+  --sage-bg:     #eef4ee;
+  --ember-bg:    #fdf0ea;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'DM Sans', sans-serif; background: var(--deep-forest); color: var(--charcoal); min-height: 100vh; display: flex; flex-direction: column; align-items: center; padding: 2rem 1rem 5rem; }
+
+/* ── HEADER ── */
+.header { text-align: center; margin-bottom: 1.75rem; }
+.logo { font-family: 'Playfair Display', serif; font-size: 1.6rem; color: #fff; letter-spacing: 0.02em; }
+.logo em { font-style: italic; color: var(--gold); }
+.logo-sub { font-size: 0.72rem; font-weight: 300; color: rgba(255,255,255,0.5); letter-spacing: 0.14em; text-transform: uppercase; margin-top: 0.25rem; }
+
+/* ── PROGRESS ── */
+.progress-wrap { width: 100%; max-width: 660px; margin-bottom: 1.25rem; }
+.progress-meta { display: flex; justify-content: space-between; font-size: 0.78rem; color: rgba(255,255,255,0.45); margin-bottom: 0.4rem; }
+.progress-track { height: 3px; background: rgba(255,255,255,0.1); border-radius: 2px; }
+.progress-fill { height: 3px; background: linear-gradient(90deg, var(--gold) 0%, var(--ember) 100%); border-radius: 2px; transition: width 0.5s ease; width: 0%; }
+
+/* ── CARD ── */
+.card { background: var(--cream); border-radius: 20px; width: 100%; max-width: 660px; box-shadow: 0 8px 40px rgba(0,0,0,0.25); overflow: hidden; }
+.screen { display: none; }
+.screen.active { display: block; }
+.card-body { padding: 2.25rem 2rem 1rem; }
+
+/* ── TYPE ── */
+.eyebrow { font-size: 0.72rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ember); margin-bottom: 0.5rem; }
+.screen-title { font-family: 'Playfair Display', serif; font-size: 1.75rem; line-height: 1.25; color: var(--deep-forest); margin-bottom: 1rem; }
+.screen-desc { font-size: 0.975rem; line-height: 1.7; color: var(--charcoal); margin-bottom: 1.25rem; }
+.section-num { font-family: 'Playfair Display', serif; font-size: 2.5rem; font-weight: 600; color: var(--gold); opacity: 0.4; line-height: 1; margin-bottom: 0.25rem; }
+.divider { height: 1px; background: var(--border); margin: 1.5rem 0; }
+
+/* ── AFFIRMATIONS ── */
+.affirmations { background: var(--plum-bg); border-left: 3px solid var(--plum); border-radius: 0 10px 10px 0; padding: 1.25rem 1.5rem; margin: 1.25rem 0; }
+.affirmations p { font-size: 0.92rem; line-height: 1.65; color: #3a1535; margin-bottom: 0.5rem; }
+.affirmations p:last-child { margin-bottom: 0; }
+
+/* ── PULL QUOTE ── */
+.pull-quote { font-family: 'Playfair Display', serif; font-size: 1.05rem; font-style: italic; line-height: 1.65; color: var(--deep-forest); border-left: 3px solid var(--gold); padding: 1rem 1.5rem; margin: 1.5rem 0; background: var(--gold-bg); border-radius: 0 10px 10px 0; }
+
+/* ── MEDITATION PLAYER ── */
+.meditation-player { background: var(--deep-forest); border-radius: 14px; padding: 1.75rem; margin: 1.25rem 0; }
+.meditation-label { font-family: 'Playfair Display', serif; font-size: 1.05rem; color: var(--gold); margin-bottom: 0.5rem; }
+.meditation-desc { font-size: 0.9rem; color: rgba(255,255,255,0.6); line-height: 1.65; margin-bottom: 1.25rem; }
+.meditation-player audio { width: 100%; margin-bottom: 0.75rem; }
+.meditation-note { font-size: 0.8rem; color: rgba(255,255,255,0.35); font-style: italic; }
+
+/* ── RECOGNITION CARDS ── */
+.recognition-intro { font-size: 0.88rem; line-height: 1.65; color: var(--mid); font-style: italic; margin-bottom: 1.25rem; }
+.stage-recognition-card { border-radius: 14px; padding: 1.1rem 1.25rem; margin-bottom: 0.75rem; border: 2px solid var(--border); background: var(--warm-white); cursor: pointer; transition: all 0.2s; display: flex; align-items: flex-start; gap: 1rem; }
+.stage-recognition-card:hover { border-color: var(--ember); background: var(--ember-bg); }
+.stage-recognition-card[data-stage="loop"].selected    { border-color: var(--gold);  background: var(--gold-bg); }
+.stage-recognition-card[data-stage="stress"].selected  { border-color: var(--ember); background: var(--ember-bg); }
+.stage-recognition-card[data-stage="fatigue"].selected { border-color: #b07a30;      background: #fdf3e3; }
+.stage-recognition-card[data-stage="grief"].selected   { border-color: #5a6ab0;      background: #eef0f8; }
+.stage-recognition-card[data-stage="trauma"].selected  { border-color: var(--plum);  background: var(--plum-bg); }
+.stage-rec-icon { font-size: 1.3rem; flex-shrink: 0; margin-top: 2px; }
+.stage-rec-name { font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 600; color: var(--deep-forest); margin-bottom: 0.2rem; }
+.stage-rec-time { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--mid); margin-bottom: 0.35rem; }
+.stage-rec-cue { font-size: 0.88rem; color: var(--charcoal); line-height: 1.5; font-style: italic; }
+.stage-rec-check { margin-left: auto; flex-shrink: 0; width: 22px; height: 22px; border-radius: 50%; border: 2px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 0.75rem; color: transparent; transition: all 0.2s; margin-top: 2px; }
+.stage-recognition-card[data-stage="loop"].selected    .stage-rec-check { background: var(--gold);  border-color: var(--gold);  color: var(--deep-forest); }
+.stage-recognition-card[data-stage="stress"].selected  .stage-rec-check { background: var(--ember); border-color: var(--ember); color: #fff; }
+.stage-recognition-card[data-stage="fatigue"].selected .stage-rec-check { background: #b07a30;      border-color: #b07a30;      color: #fff; }
+.stage-recognition-card[data-stage="grief"].selected   .stage-rec-check { background: #5a6ab0;      border-color: #5a6ab0;      color: #fff; }
+.stage-recognition-card[data-stage="trauma"].selected  .stage-rec-check { background: var(--plum);  border-color: var(--plum);  color: #fff; }
+.recognition-note { font-size: 0.83rem; color: var(--mid); font-style: italic; margin-top: 1rem; line-height: 1.55; }
+
+/* ── STAGE BANNER ── */
+.stage-banner { border-radius: 0 12px 12px 0; padding: 1.25rem 1.4rem; margin-bottom: 1.75rem; border-left: 4px solid; }
+.stage-banner.loop    { background: var(--gold-bg);  border-color: var(--gold); }
+.stage-banner.stress  { background: var(--ember-bg); border-color: var(--ember); }
+.stage-banner.fatigue { background: #fdf3e3;          border-color: #b07a30; }
+.stage-banner.grief   { background: #eef0f8;          border-color: #5a6ab0; }
+.stage-banner.trauma  { background: var(--plum-bg);  border-color: var(--plum); }
+.stage-banner-name { font-family: 'Playfair Display', serif; font-size: 1.05rem; font-weight: 600; color: var(--deep-forest); margin-bottom: 0.2rem; line-height: 1.3; }
+.stage-banner-time { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--mid); margin-bottom: 0.5rem; }
+.stage-banner-cue  { font-size: 0.88rem; font-style: italic; color: var(--charcoal); line-height: 1.6; }
+
+/* ── STAGE DIVIDER ── */
+.stage-divider { display: flex; align-items: center; margin: 1.5rem 0 1.25rem; }
+.stage-divider::before, .stage-divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+.stage-divider span { font-size: 0.68rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--sage); padding: 0 0.85rem; }
+
+/* ── REFLECT BLOCKS ── */
+.reflect-block { background: var(--warm-white); border: 1.5px solid var(--border); border-radius: 12px; padding: 1.25rem; margin: 0 0 1rem; }
+.reflect-block.sage  { background: var(--sage-bg);  border-color: var(--sage); }
+.reflect-block.gold  { background: var(--gold-bg);  border-color: var(--gold); }
+.reflect-block.plum  { background: var(--plum-bg);  border-color: var(--plum); }
+.reflect-label { font-size: 0.72rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--warm-clay); margin-bottom: 0.5rem; }
+.reflect-block.sage .reflect-label { color: var(--sage); }
+.reflect-block.gold .reflect-label { color: var(--warm-clay); }
+.reflect-block.plum .reflect-label { color: var(--plum); }
+.reflect-question { font-size: 0.95rem; line-height: 1.65; color: var(--charcoal); margin-bottom: 0.75rem; }
+textarea { width: 100%; min-height: 110px; border: 1.5px solid var(--border); border-radius: 10px; padding: 0.85rem; font-family: 'DM Sans', sans-serif; font-size: 0.9rem; resize: vertical; background: #fff; color: var(--charcoal); line-height: 1.6; transition: border-color 0.2s; box-sizing: border-box; }
+textarea:focus { outline: none; border-color: var(--ember); }
+textarea.short { min-height: 75px; }
+textarea::placeholder { color: #b0a898; font-style: italic; }
+
+/* ── BODY STATE ── */
+.body-state-grid { display: flex; flex-wrap: wrap; gap: 0.6rem; margin: 1rem 0; }
+.body-state-btn { padding: 0.55rem 1.1rem; border-radius: 20px; border: 1.5px solid var(--border); background: var(--warm-white); font-family: 'DM Sans', sans-serif; font-size: 0.88rem; color: var(--charcoal); cursor: pointer; transition: all 0.18s; }
+.body-state-btn:hover { border-color: var(--ember); }
+.body-state-btn.selected { background: var(--ember); border-color: var(--ember); color: #fff; }
+.body-state-note { font-size: 0.83rem; color: var(--mid); font-style: italic; margin-top: 0.5rem; line-height: 1.5; }
+
+/* ── VAGAL RITUAL ── */
+.vagal-ritual { background: var(--deep-forest); border-radius: 14px; padding: 1.5rem; margin: 0 0 0.5rem; }
+.vagal-ritual-eyebrow { font-size: 0.7rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.35rem; }
+.vagal-ritual-title { font-family: 'Playfair Display', serif; font-size: 1.05rem; color: #fff; margin-bottom: 0.5rem; }
+.vagal-ritual-instruction { font-size: 0.9rem; color: rgba(255,255,255,0.7); line-height: 1.65; margin-bottom: 0.75rem; }
+.vagal-psychoed { font-size: 0.82rem; color: rgba(255,255,255,0.38); font-style: italic; line-height: 1.62; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 0.75rem; margin-bottom: 1.25rem; }
+.breath-circles { display: flex; justify-content: center; gap: 1rem; margin-bottom: 0.75rem; }
+.breath-circle { width: 52px; height: 52px; border-radius: 50%; border: 2px solid rgba(201,168,76,0.35); display: flex; align-items: center; justify-content: center; font-size: 1.1rem; cursor: pointer; transition: all 0.3s; background: transparent; color: rgba(255,255,255,0.2); user-select: none; }
+.breath-circle.done { background: var(--gold); border-color: var(--gold); color: var(--deep-forest); }
+.breath-instruction { font-size: 0.82rem; color: rgba(255,255,255,0.38); font-style: italic; text-align: center; }
+
+/* ── MICRO ACTION ── */
+.micro-action-wrap { background: var(--sage-bg); border-left: 4px solid var(--sage); border-radius: 0 12px 12px 0; padding: 1.25rem; margin: 1.25rem 0; }
+.micro-action-label { font-size: 0.72rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--sage); margin-bottom: 0.5rem; }
+.micro-action-prompt { font-size: 0.95rem; line-height: 1.65; color: var(--charcoal); margin-bottom: 0.75rem; }
+
+/* ── BRIDGE CARD ── */
+.bridge-card { background: var(--deep-forest); border-radius: 14px; padding: 1.75rem; margin: 1.5rem 0; color: rgba(255,255,255,0.85); text-align: center; }
+.bridge-card-title { font-family: 'Playfair Display', serif; font-size: 1.15rem; color: var(--gold); margin-bottom: 0.75rem; font-style: italic; }
+.bridge-card-desc { font-size: 0.92rem; line-height: 1.7; color: rgba(255,255,255,0.65); }
+
+/* ── NAV ── */
+.nav-bar { display: flex; justify-content: space-between; align-items: center; padding: 1.25rem 2rem; border-top: 1px solid var(--border); background: var(--cream); gap: 0.75rem; }
+.btn { padding: 0.7rem 1.5rem; border-radius: 10px; font-family: 'DM Sans', sans-serif; font-size: 0.9rem; font-weight: 500; cursor: pointer; border: none; transition: all 0.18s; }
+.btn-primary { background: var(--ember); color: #fff; }
+.btn-primary:hover { background: #a84a20; }
+.btn-ghost { background: transparent; color: var(--mid); border: 1.5px solid var(--border); }
+.btn-ghost:hover { background: var(--border); color: var(--charcoal); }
+.completion-icon { font-size: 3rem; color: var(--gold); margin-bottom: 1rem; }
+
+@media (max-width: 600px) {
+  .card-body { padding: 1.75rem 1.25rem 1rem; }
+  .nav-bar { padding: 1rem 1.25rem; }
+  .screen-title { font-size: 1.45rem; }
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="logo">The <em>Liberation</em> Series</div>
+  <div class="logo-sub">Interrupting the Spiral</div>
+</div>
+
+<div class="progress-wrap">
+  <div class="progress-meta">
+    <span id="stepLabel">Step 1 of 14</span>
+    <span id="stepPct">0%</span>
+  </div>
+  <div class="progress-track">
+    <div class="progress-fill" id="progressFill"></div>
+  </div>
+</div>
+
+<div class="card">
+
+  <!-- ══ SCREEN 1 — WELCOME ══ -->
+  <div class="screen active" id="screen1">
+    <div class="card-body">
+      <div class="eyebrow">Welcome</div>
+      <h1 class="screen-title">You built these loops to survive.</h1>
+      <p class="screen-desc">In this part of the work, we're moving into your <strong>Cognitive Body</strong> — the part of you that holds your thoughts, your stories, and the mental loops that run in the background while you're trying to build something real.</p>
+      <p class="screen-desc">For a lot of us, the moment we think <em>"I could actually get paid for this,"</em> another voice shows up immediately: <em>"I don't have enough. Enough money, enough followers, enough time."</em></p>
+      <p class="screen-desc">That voice wasn't born in you. It was learned. And it can be interrupted.</p>
+      <div class="affirmations">
+        <p>✦ &nbsp;This space is entirely yours. Nothing you write here is wrong.</p>
+        <p>✦ &nbsp;You are allowed to feel everything — or nothing. Both are valid.</p>
+        <p>✦ &nbsp;There is no pace you're supposed to be moving at. Your pace is the right pace.</p>
+        <p>✦ &nbsp;You can pause, breathe, or step away at any time. This work will be here when you return.</p>
+      </div>
+      <p class="screen-desc">We'll begin with a meditation to ground you in your offer and the people who need it — before anything else.</p>
+    </div>
+    <div class="nav-bar">
+      <span></span>
+      <button class="btn btn-primary" onclick="advance(2)">I'm ready →</button>
+    </div>
+  </div>
+
+  <!-- ══ SCREEN 2 — MEDITATION ══ -->
+  <div class="screen" id="screen2">
+    <div class="card-body">
+      <div class="eyebrow">Opening Practice</div>
+      <h1 class="screen-title">What I'm Looking For Is Looking For Me</h1>
+      <p class="screen-desc">Before any worksheet work begins, let I'sha guide you in. This meditation will bring you into body awareness around your main business idea and the people who need it — anchoring the sense that your right-fit clients exist and are already looking for you.</p>
+      <p class="screen-desc">Find somewhere quiet. Let this be the beginning.</p>
+
+      <div class="meditation-player">
+        <div class="meditation-label">Opening Practice · Begin Here. <em>With I'sha.</em></div>
+        <p class="meditation-desc">Find a comfortable position and let I'sha guide you in. This is your threshold. Cross it slowly.</p>
+        <audio controls>
+          <source src="./audio/meditation-what-im-looking-for.m4a" type="audio/mp4">
+        </audio>
+        <p class="meditation-note">Take your time. The worksheets will be here when you return.</p>
+      </div>
+
+      <p class="screen-desc" style="font-size:0.88rem; color:var(--mid); margin-top:1.25rem;">When the meditation is complete and you feel ready, continue to the first worksheet.</p>
+    </div>
+    <div class="nav-bar">
+      <button class="btn btn-ghost" onclick="advance(1)">← Back</button>
+      <button class="btn btn-primary" onclick="advance(3)">I've listened — continue →</button>
+    </div>
+  </div>
+
+  <!-- ══ SCREEN 3 — MY OFFER AND THE GAP ══ -->
+  <div class="screen" id="screen3">
+    <div class="card-body">
+      <div class="eyebrow">My Offer and the Gap</div>
+      <h1 class="screen-title">My Offer and the Gap</h1>
+      <p class="screen-desc">Ground yourself in what you're building before we look at what gets in the way. Start here.</p>
+
+      <div class="reflect-block gold">
+        <div class="reflect-label">Your Offer</div>
+        <p class="reflect-question">The main offer or idea I'm working with right now is…</p>
+        <textarea id="ws1_offer" placeholder="Not the polished version. The real one."></textarea>
+      </div>
+
+      <div class="reflect-block gold">
+        <div class="reflect-label">The Gap</div>
+        <p class="reflect-question">The gap this idea fills — what was missing in my old job, workplace, or community — is…</p>
+        <textarea id="ws1_gap" placeholder="What did you notice was broken? What did people need that wasn't there?"></textarea>
+      </div>
+
+      <div class="reflect-block gold">
+        <div class="reflect-label">The Person Who Needs This</div>
+        <p class="reflect-question">When I imagine someone who needs this offer, their life and body might feel like…</p>
+        <textarea id="ws1_person" placeholder="Not a 'target market.' A real person carrying real weight."></textarea>
+      </div>
+    </div>
+    <div class="nav-bar">
+      <button class="btn btn-ghost" onclick="advance(2)">← Back</button>
+      <button class="btn btn-primary" onclick="advance(4)">Continue →</button>
+    </div>
+  </div>
+
+  <!-- ══ SCREEN 4 — RECOGNITION ══ -->
+  <div class="screen" id="screen4">
+    <div class="card-body">
+      <div class="eyebrow">The Thought to Trauma Progression</div>
+      <h1 class="screen-title">And somewhere in that naming...</h1>
+      <p class="screen-desc">You just named your offer, the gap it fills, and the person who needs it. That took something.</p>
+      <p class="screen-desc">And somewhere in that naming — maybe right now — another feeling emerged. Or a thought. Something that showed up the moment you got close to actually claiming this.</p>
+
+      <div class="reflect-block">
+        <div class="reflect-label">What is happening right now?</div>
+        <p class="reflect-question">Select everything that feels true — even if it doesn't make sense yet.</p>
+        <div class="body-state-grid" style="margin-top:0.75rem;">
+          <button class="body-state-btn" onclick="toggleState(this)">Shallow breath</button>
+          <button class="body-state-btn" onclick="toggleState(this)">"What if it doesn't work"</button>
+          <button class="body-state-btn" onclick="toggleState(this)">Restlessness</button>
+          <button class="body-state-btn" onclick="toggleState(this)">Heaviness</button>
+          <button class="body-state-btn" onclick="toggleState(this)">"Who am I to be doing this"</button>
+          <button class="body-state-btn" onclick="toggleState(this)">Mind tightening</button>
+          <button class="body-state-btn" onclick="toggleState(this)">Tension in my neck or jaw</button>
+          <button class="body-state-btn" onclick="toggleState(this)">Wanting to withdraw</button>
+          <button class="body-state-btn" onclick="toggleState(this)">Stomach shifting</button>
+          <button class="body-state-btn" onclick="toggleState(this)">"I'm not ready yet"</button>
+          <button class="body-state-btn" onclick="toggleState(this)">Creative fog</button>
+          <button class="body-state-btn" onclick="toggleState(this)">Sadness</button>
+          <button class="body-state-btn" onclick="toggleState(this)">Numbness</button>
+          <button class="body-state-btn" onclick="toggleState(this)">Hypervigilance</button>
+          <button class="body-state-btn" onclick="toggleState(this)">Something I can't name yet</button>
+        </div>
+        <p class="body-state-note">Whatever is here belongs here. We're going to move through all of it — one place at a time.</p>
+      </div>
+    </div>
+    <div class="nav-bar">
+      <button class="btn btn-ghost" onclick="advance(3)">← Back</button>
+      <button class="btn btn-primary" onclick="advance(5)">Let's move through them →</button>
+    </div>
+  </div>
+
+  <!-- ══ SCREEN 5 — STAGE 1: THE THOUGHT LOOP ══ -->
+  <div class="screen" id="screen5">
+    <div class="card-body">
+      <div class="eyebrow">A Place You May Have Lived</div>
+      <h1 class="screen-title">The Thought Loop</h1>
+      <div class="stage-banner loop">
+        <div class="stage-banner-name">The thought keeps circling</div>
+        <div class="stage-banner-time">The loop is early — but it's already in your body</div>
+        <div class="stage-banner-cue">One scarcity sentence starts repeating. Your mind tightens. Breath gets shallow. You feel restless — like you need to do something, fix something, control something right now.</div>
+      </div>
+
+      <div class="reflect-block">
+        <div class="reflect-label">Your Thought Loop</div>
+        <p class="reflect-question">When you step toward your business idea, what is the scarcity sentence that shows up? Write it exactly as it sounds in your head.</p>
+        <textarea id="s1_reflect" placeholder="Not the cleaned-up version. The raw one. 'I don't have enough…' or whatever yours actually sounds like."></textarea>
+      </div>
+
+      <div class="reflect-block">
+        <div class="reflect-label">What Are You Trying to Control?</div>
+        <p class="reflect-question">When that thought loops — what is it trying to hold onto or protect? What feels like it would fall apart if you stopped managing it?</p>
+        <textarea id="s1_control" class="short" placeholder="Take your time. There's no wrong answer here."></textarea>
+      </div>
+
+      <div class="stage-divider"><span>regulation practice</span></div>
+
+      <div class="vagal-ritual">
+        <div class="vagal-ritual-eyebrow">Now that you've named it</div>
+        <div class="vagal-ritual-title">The Physiological Sigh</div>
+        <p class="vagal-ritual-instruction">Take a double inhale through your nose — two short sniffs in a row — then one long, slow exhale out through your mouth. Tap each circle as you complete a full breath cycle.</p>
+        <p class="vagal-psychoed">When your Cognitive Body is looping, your breath naturally gets shallow and fast — which keeps your nervous system activated. The double inhale fully inflates the lungs and reactivates collapsed alveoli. The long exhale activates the parasympathetic branch of your nervous system and is the fastest known way to lower your heart rate and interrupt a thought spiral in real time.</p>
+        <div class="breath-circles">
+          <div class="breath-circle" id="s1b1" onclick="markStageBreath(1,1)">○</div>
+          <div class="breath-circle" id="s1b2" onclick="markStageBreath(1,2)">○</div>
+          <div class="breath-circle" id="s1b3" onclick="markStageBreath(1,3)">○</div>
+        </div>
+        <p class="breath-instruction" id="s1note">Double inhale through the nose. Long exhale out the mouth. Then tap.</p>
+      </div>
+    </div>
+    <div class="nav-bar">
+      <button class="btn btn-ghost" onclick="advance(4)">← Back</button>
+      <button class="btn btn-primary" onclick="advance(6)">Continue →</button>
+    </div>
+  </div>
+
+  <!-- ══ SCREEN 6 — STAGE 2: STRESS ══ -->
+  <div class="screen" id="screen6">
+    <div class="card-body">
+      <div class="eyebrow">A Place You May Have Lived</div>
+      <h1 class="screen-title">Stress</h1>
+      <div class="stage-banner stress">
+        <div class="stage-banner-name">The body starts paying the bill</div>
+        <div class="stage-banner-time">The loop has been running for days</div>
+        <div class="stage-banner-cue">The loop keeps running. Your Emotional and Physical Bodies start reacting — tension, headaches, digestive shifts. You're still functioning, but everything costs more than it should.</div>
+      </div>
+
+      <div class="reflect-block">
+        <div class="reflect-label">What Is Your Stress Standing Guard Over?</div>
+        <p class="reflect-question">Sometimes what looks like tension is actually protection — a body that learned a long time ago that some emotions weren't safe to feel out loud. What feeling might your stress be standing guard over right now?</p>
+        <textarea id="s2_reflect" placeholder="It doesn't have to be fully formed. Even a direction — toward fear, toward anger, toward grief — is enough."></textarea>
+      </div>
+
+      <div class="stage-divider"><span>regulation practice</span></div>
+
+      <div class="vagal-ritual">
+        <div class="vagal-ritual-eyebrow">Now that you've named it</div>
+        <div class="vagal-ritual-title">A Slow Sip of Cold Water</div>
+        <p class="vagal-ritual-instruction">If you have water nearby, take one slow, deliberate sip of cold water. Feel it move down your throat and into your body. Don't rush it. Tap each circle as you complete a slow, conscious sip.</p>
+        <p class="vagal-psychoed">When stress is sustained, your body stays in a mild fight-or-flight state — muscles tense, digestion slows, jaw clenches. Swallowing cold water activates the vagus nerve through the esophagus, triggering a parasympathetic response that gently signals safety. Doing it slowly and deliberately also shifts your attention from the mental loop to a simple, grounding physical sensation — interrupting the stress cycle without pulling you away from your work.</p>
+        <div class="breath-circles">
+          <div class="breath-circle" id="s2b1" onclick="markStageBreath(2,1)">○</div>
+          <div class="breath-circle" id="s2b2" onclick="markStageBreath(2,2)">○</div>
+          <div class="breath-circle" id="s2b3" onclick="markStageBreath(2,3)">○</div>
+        </div>
+        <p class="breath-instruction" id="s2note">Take a slow, deliberate sip. Feel it move through you. Then tap.</p>
+      </div>
+    </div>
+    <div class="nav-bar">
+      <button class="btn btn-ghost" onclick="advance(5)">← Back</button>
+      <button class="btn btn-primary" onclick="advance(7)">Continue →</button>
+    </div>
+  </div>
+
+  <!-- ══ SCREEN 7 — STAGE 3: FATIGUE ══ -->
+  <div class="screen" id="screen7">
+    <div class="card-body">
+      <div class="eyebrow">A Place You May Have Lived</div>
+      <h1 class="screen-title">Fatigue</h1>
+      <div class="stage-banner fatigue">
+        <div class="stage-banner-name">The body goes quiet to survive</div>
+        <div class="stage-banner-time">The weight has been building for weeks</div>
+        <div class="stage-banner-cue">Your Physical Body slows. Your Cognitive Body can't hold as much. Heavy, withdrawn, creatively foggy. Business ideas that once lit you up feel far away. This is not laziness. This is depletion.</div>
+      </div>
+
+      <div class="reflect-block">
+        <div class="reflect-label">Where Is Your Body Storing This Weight?</div>
+        <p class="reflect-question">Not what you're thinking — what you're carrying. Where in your body do you feel the heaviness right now, or when you're living in this place?</p>
+        <textarea id="s3_reflect" placeholder="Your chest, your shoulders, behind your eyes, the backs of your legs. Wherever it lives — name it."></textarea>
+      </div>
+
+      <div class="stage-divider"><span>regulation practice</span></div>
+
+      <div class="vagal-ritual">
+        <div class="vagal-ritual-eyebrow">Now that you've named it</div>
+        <div class="vagal-ritual-title">Slow Bilateral Tapping</div>
+        <p class="vagal-ritual-instruction">Place both hands on your thighs. Slowly tap left, right, left, right — alternating, unhurried, about the pace of a slow walk. Tap each circle after you complete a set of eight alternating taps.</p>
+        <p class="vagal-psychoed">Fatigue often means your nervous system has moved into a dorsal vagal shutdown — a freeze response where the body conserves energy by going still and heavy. Gentle bilateral (left-right alternating) stimulation helps move stuck energy through your system without demanding more from an already depleted body. It works on the same principle as EMDR therapy: rhythmic, alternating input helps the nervous system shift out of freeze without overwhelming it further.</p>
+        <div class="breath-circles">
+          <div class="breath-circle" id="s3b1" onclick="markStageBreath(3,1)">○</div>
+          <div class="breath-circle" id="s3b2" onclick="markStageBreath(3,2)">○</div>
+          <div class="breath-circle" id="s3b3" onclick="markStageBreath(3,3)">○</div>
+        </div>
+        <p class="breath-instruction" id="s3note">Left, right, left, right — slow and easy. Eight taps per round. Then tap a circle.</p>
+      </div>
+    </div>
+    <div class="nav-bar">
+      <button class="btn btn-ghost" onclick="advance(6)">← Back</button>
+      <button class="btn btn-primary" onclick="advance(8)">Continue →</button>
+    </div>
+  </div>
+
+  <!-- ══ SCREEN 8 — STAGE 4: GRIEF ══ -->
+  <div class="screen" id="screen8">
+    <div class="card-body">
+      <div class="eyebrow">A Place You May Have Lived</div>
+      <h1 class="screen-title">Grief</h1>
+      <div class="stage-banner grief">
+        <div class="stage-banner-name">The light starts going out</div>
+        <div class="stage-banner-time">Grief has been living here for months</div>
+        <div class="stage-banner-cue">Your Emotional and Spiritual Bodies begin to dim. Sadness. Isolation. Numbness. You might stop sharing your ideas — not because they're bad, but because hope has started to feel risky.</div>
+      </div>
+
+      <div class="reflect-block">
+        <div class="reflect-label">What Have You Not Had Space to Release?</div>
+        <p class="reflect-question">What is sitting in your Emotional Body that hasn't had space yet — about the job you lost, the business you're afraid to fully claim, the version of yourself you've been quietly grieving?</p>
+        <textarea id="s4_reflect" placeholder="You don't have to have it all figured out. Even a sentence is enough. What hasn't been said?"></textarea>
+      </div>
+
+      <div class="stage-divider"><span>regulation practice</span></div>
+
+      <div class="vagal-ritual">
+        <div class="vagal-ritual-eyebrow">Now that you've named it</div>
+        <div class="vagal-ritual-title">Hand on Heart · Hum or Sigh</div>
+        <p class="vagal-ritual-instruction">Place one hand gently on your chest. Feel the warmth of your own hand. Then hum softly — just a quiet "mmmmm" — or let out a slow, audible sigh. Let it be small. It's just for you. Tap each circle after each hum or sigh.</p>
+        <p class="vagal-psychoed">Grief lives in the Emotional and Spiritual Bodies, where numbness and disconnection settle in quietly. The vagus nerve runs directly through the throat and vocal cords — humming and sighing create vibration that activates it from the inside, toning it gently without forcing anything open. The warmth of your own hand on your chest signals physical safety to your nervous system. Together, these help bring your Spiritual Body back online on its own terms — one of the oldest forms of self-regulation we know.</p>
+        <div class="breath-circles">
+          <div class="breath-circle" id="s4b1" onclick="markStageBreath(4,1)">○</div>
+          <div class="breath-circle" id="s4b2" onclick="markStageBreath(4,2)">○</div>
+          <div class="breath-circle" id="s4b3" onclick="markStageBreath(4,3)">○</div>
+        </div>
+        <p class="breath-instruction" id="s4note">Hand on heart. Hum or sigh. Let the sound be quiet. Then tap.</p>
+      </div>
+    </div>
+    <div class="nav-bar">
+      <button class="btn btn-ghost" onclick="advance(7)">← Back</button>
+      <button class="btn btn-primary" onclick="advance(9)">Continue →</button>
+    </div>
+  </div>
+
+  <!-- ══ SCREEN 9 — STAGE 5: TRAUMA ══ -->
+  <div class="screen" id="screen9">
+    <div class="card-body">
+      <div class="eyebrow">A Place You May Have Lived</div>
+      <h1 class="screen-title">Trauma</h1>
+      <div class="stage-banner trauma">
+        <div class="stage-banner-name">Survival became the only option</div>
+        <div class="stage-banner-time">The body has been carrying this for years</div>
+        <div class="stage-banner-cue">All Five Bodies shift into survival. The thought loop becomes a reflex. Your business itself can start to feel like a source of retraumatization — every slow week, every unanswered message, triggering the same old fear.</div>
+      </div>
+
+      <div class="reflect-block">
+        <div class="reflect-label">Whose Story Are You Carrying Besides Your Own?</div>
+        <p class="reflect-question">The fear that lives in your Ancestral Body is often older than you. When your business triggers survival mode — who else's voice is in that room with you?</p>
+        <textarea id="s5_reflect" placeholder="A parent's fear about money. A community's history of being shut out. Something inherited that was never yours to carry alone."></textarea>
+      </div>
+
+      <div class="reflect-block">
+        <div class="reflect-label">Whose Voice Is in That Loop?</div>
+        <p class="reflect-question">The scarcity thought you named — how long has it been with you? Does it sound like your voice, or did someone else put it there first?</p>
+        <textarea id="s5_voice" class="short" placeholder="You don't have to trace the whole history. Just notice what comes up."></textarea>
+      </div>
+
+      <div class="stage-divider"><span>regulation practice</span></div>
+
+      <div class="vagal-ritual">
+        <div class="vagal-ritual-eyebrow">Now that you've named it</div>
+        <div class="vagal-ritual-title">The Orienting Response</div>
+        <p class="vagal-ritual-instruction">Slowly turn your head and look around the room. Not scanning for threats — looking with soft eyes, like you're seeing this space for the first time. Silently name five things you can actually see right now. Tap each circle as you name one.</p>
+        <p class="vagal-psychoed">When trauma is active, your nervous system is convinced the danger is still present — even when it isn't. The orienting response is one of the most powerful tools in somatic trauma work: by deliberately looking around and naming what you see, you send a direct signal to your brainstem that says "I am here, I am in this room, the threat is not in front of me right now." It interrupts the fear reflex not by thinking differently, but by giving your survival system new, accurate sensory information about where you actually are.</p>
+        <div class="breath-circles">
+          <div class="breath-circle" id="s5b1" onclick="markStageBreath(5,1)">○</div>
+          <div class="breath-circle" id="s5b2" onclick="markStageBreath(5,2)">○</div>
+          <div class="breath-circle" id="s5b3" onclick="markStageBreath(5,3)">○</div>
+        </div>
+        <p class="breath-instruction" id="s5note">Look around slowly. Name one thing you truly see. Then tap.</p>
+      </div>
+    </div>
+    <div class="nav-bar">
+      <button class="btn btn-ghost" onclick="advance(8)">← Back</button>
+      <button class="btn btn-primary" onclick="advance(10)">Continue →</button>
+    </div>
+  </div>
+
+  <!-- ══ SCREEN 10 — INTEGRATION ══ -->
+  <div class="screen" id="screen10">
+    <div class="card-body">
+      <div class="eyebrow">What Did You Just Learn?</div>
+      <h1 class="screen-title">What Did You Just Learn?</h1>
+      <p class="screen-desc">Five places. Five ways your body has responded to the weight of trying to build something real. Before we go further, take a breath and let what you just saw settle.</p>
+
+      <blockquote class="pull-quote">"You built these loops to survive systems that were never designed for your thriving."</blockquote>
+
+      <div class="reflect-block">
+        <div class="reflect-label">Where Do You Recognize Yourself?</div>
+        <p class="reflect-question">Looking back at these five places — where do you most see yourself? What does it tell you about what your body has been quietly carrying while you've been trying to build?</p>
+        <textarea id="ws1_integration" placeholder="It might be one place. It might be all five. There's no wrong answer."></textarea>
+      </div>
+    </div>
+    <div class="nav-bar">
+      <button class="btn btn-ghost" onclick="advance(9)">← Back</button>
+      <button class="btn btn-primary" onclick="advance(11)">Continue →</button>
+    </div>
+  </div>
+
+  <!-- ══ SCREEN 11 — NEW THOUGHT LOOP ══ -->
+  <div class="screen" id="screen11">
+    <div class="card-body">
+      <div class="eyebrow">A New Thought Loop</div>
+      <h1 class="screen-title">What I'm Looking For Is Looking For Me</h1>
+      <p class="screen-desc">Right now, there are people whose bodies are carrying the same patterns you carried at that job you lost. They may not know your name yet. But the need your business responds to is already alive in them.</p>
+
+      <blockquote class="pull-quote">"What I'm looking for, is looking for me. My idea fills a gap in this market. I have what people need."</blockquote>
+
+      <div class="reflect-block sage">
+        <div class="reflect-label">Even When I Can't See Them Yet</div>
+        <p class="reflect-question">I believe there are people out there looking for…</p>
+        <textarea id="ws1_people" placeholder="Describe what they're searching for — in their body, in their work, in their life."></textarea>
+      </div>
+
+      <div class="divider"></div>
+
+      <p class="screen-desc" style="font-size:0.9rem; margin-bottom:0.5rem;">When you try on the thought <em>"What I'm looking for is looking for me,"</em> what does your body do? Select everything that's true — including the harder ones.</p>
+
+      <div class="body-state-grid">
+        <button class="body-state-btn" onclick="toggleState(this)">Calmer</button>
+        <button class="body-state-btn" onclick="toggleState(this)">Tighter</button>
+        <button class="body-state-btn" onclick="toggleState(this)">Hopeful</button>
+        <button class="body-state-btn" onclick="toggleState(this)">Numb</button>
+        <button class="body-state-btn" onclick="toggleState(this)">Curious</button>
+        <button class="body-state-btn" onclick="toggleState(this)">Resistant</button>
+        <button class="body-state-btn" onclick="toggleState(this)">Skeptical</button>
+        <button class="body-state-btn" onclick="toggleState(this)">Something softening</button>
+      </div>
+      <p class="body-state-note">Whatever you selected is the right answer. Tighter and resistant are just as important to honor as hopeful and calm. Your body is telling you something true.</p>
+
+      <div class="reflect-block sage" style="margin-top:1.25rem;">
+        <div class="reflect-label">Your New Thought Loop</div>
+        <p class="reflect-question">A supportive thought I want to practice instead is: <em>"My idea fills a gap in this market because…"</em></p>
+        <textarea id="ws1_new_loop" placeholder="Complete this in your own words. Let it be specific to you."></textarea>
+      </div>
+    </div>
+    <div class="nav-bar">
+      <button class="btn btn-ghost" onclick="advance(10)">← Back</button>
+      <button class="btn btn-primary" onclick="advance(12)">Continue →</button>
+    </div>
+  </div>
+
+  <!-- ══ SCREEN 12 — MICRO-ACTION ══ -->
+  <div class="screen" id="screen12">
+    <div class="card-body">
+      <div class="eyebrow">One Regulated Step</div>
+      <h1 class="screen-title">One Regulated Step</h1>
+      <p class="screen-desc">Not a leap. Not a plan. One small, honest action your nervous system can actually hold right now.</p>
+
+      <div class="micro-action-wrap">
+        <div class="micro-action-label">Your Micro-Action</div>
+        <p class="micro-action-prompt">From a slightly more grounded place, one tiny business action I can take in the next 24 hours is…</p>
+        <textarea id="ws1_action" placeholder="Keep it small. Small is real. Small is how things actually happen." class="short"></textarea>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="vagal-ritual">
+        <div class="vagal-ritual-eyebrow">Before you move on</div>
+        <div class="vagal-ritual-title">Three Slow Breaths</div>
+        <p class="vagal-ritual-instruction">You've done real cognitive work here. Before you continue, take three slow, full breaths. Tap each circle as you exhale.</p>
+        <p class="vagal-psychoed">Intentional slow breathing after reflective work helps your nervous system consolidate what your body just processed. It signals that the work is complete — not abandoned, not interrupted. Just done, for now. You can close this and come back. It will all still be here.</p>
+        <div class="breath-circles">
+          <div class="breath-circle" id="mb1" onclick="markMicroBreath(1)">○</div>
+          <div class="breath-circle" id="mb2" onclick="markMicroBreath(2)">○</div>
+          <div class="breath-circle" id="mb3" onclick="markMicroBreath(3)">○</div>
+        </div>
+        <p class="breath-instruction" id="mbNote">Inhale slowly. Exhale. Then tap.</p>
+      </div>
+    </div>
+    <div class="nav-bar">
+      <button class="btn btn-ghost" onclick="advance(11)">← Back</button>
+      <button class="btn btn-primary" onclick="advance(13)">Continue →</button>
+    </div>
+  </div>
+
+  <!-- ══ SCREEN 13 — BRIDGE ══ -->
+  <div class="screen" id="screen13">
+    <div class="card-body" style="text-align:center; padding: 3rem 2rem;">
+      <div class="completion-icon">🌿</div>
+      <h2 class="screen-title" style="text-align:center;">You've done the interior work.</h2>
+      <p class="screen-desc" style="text-align:center;">You named the loop. You traced the pattern. You practiced a new anchor thought and chose one small step from a more grounded place.</p>
+      <p class="screen-desc" style="text-align:center;">That took something real.</p>
+      <div class="bridge-card">
+        <div class="bridge-card-title">What comes next is different.</div>
+        <p class="bridge-card-desc">The work you just did was inward — in your Cognitive Body, tracing what lives there. The next part turns you gently outward: toward the people whose bodies are already asking the questions your business is built to answer.</p>
+        <p class="bridge-card-desc" style="margin-top:0.75rem;">You're not begging for attention. You're becoming findable. When you're ready, that's where we're going.</p>
+      </div>
+      <p class="screen-desc" style="font-size:0.88rem; color:var(--mid); margin-top:1rem;">Come back when your body is ready. The next part will be here.</p>
+    </div>
+    <div class="nav-bar">
+      <button class="btn btn-ghost" onclick="advance(12)">← Back</button>
+      <button class="btn btn-primary" onclick="advance(14)">Continue →</button>
+    </div>
+  </div>
+
+  <!-- ══ SCREEN 14 — COMPLETION ══ -->
+  <div class="screen" id="screen14">
+    <div class="card-body" style="padding: 2.5rem 2rem 1rem; text-align:center;">
+
+      <!-- ── ACKNOWLEDGEMENT ── -->
+      <div class="completion-icon">🌿</div>
+      <h2 class="screen-title" style="text-align:center;">You showed up for yourself today.</h2>
+      <p class="screen-desc" style="text-align:center;">That took courage. The work you did here lives in your body now. It doesn't disappear when you close this tab.</p>
+
+      <!-- ── WHAT YOU COMPLETED ── -->
+      <div style="background:var(--gold-bg); border-left:3px solid var(--gold); border-radius:0 12px 12px 0; padding:1.25rem 1.5rem; margin:1.5rem 0; text-align:left;">
+        <div style="font-size:0.7rem; font-weight:500; letter-spacing:0.12em; text-transform:uppercase; color:var(--warm-clay); margin-bottom:0.85rem;">What you completed today</div>
+        <div style="display:flex; flex-direction:column; gap:0.6rem;">
+          <div style="display:flex; align-items:flex-start; gap:0.6rem; font-size:0.9rem; color:var(--charcoal); line-height:1.5;"><span style="color:var(--sage); flex-shrink:0; margin-top:1px;">🌿</span>Grounded yourself in your offer, the gap it fills, and the person who needs it</div>
+          <div style="display:flex; align-items:flex-start; gap:0.6rem; font-size:0.9rem; color:var(--charcoal); line-height:1.5;"><span style="color:var(--sage); flex-shrink:0; margin-top:1px;">🌿</span>Named what your body was already carrying before you got here</div>
+          <div style="display:flex; align-items:flex-start; gap:0.6rem; font-size:0.9rem; color:var(--charcoal); line-height:1.5;"><span style="color:var(--sage); flex-shrink:0; margin-top:1px;">🌿</span>Moved through five places the scarcity loop can live — without rushing</div>
+          <div style="display:flex; align-items:flex-start; gap:0.6rem; font-size:0.9rem; color:var(--charcoal); line-height:1.5;"><span style="color:var(--sage); flex-shrink:0; margin-top:1px;">🌿</span>Did a somatic regulation practice for each place you recognized</div>
+          <div style="display:flex; align-items:flex-start; gap:0.6rem; font-size:0.9rem; color:var(--charcoal); line-height:1.5;"><span style="color:var(--sage); flex-shrink:0; margin-top:1px;">🌿</span>Practiced a new thought loop in your own words</div>
+          <div style="display:flex; align-items:flex-start; gap:0.6rem; font-size:0.9rem; color:var(--charcoal); line-height:1.5;"><span style="color:var(--sage); flex-shrink:0; margin-top:1px;">🌿</span>Chose one grounded action from a regulated place</div>
+        </div>
+      </div>
+
+      <!-- ── PDF DOWNLOAD ── -->
+      <div style="margin-top:1.25rem; background:var(--deep-forest); border-radius:16px; padding:1.75rem 1.5rem 1.5rem; text-align:center;">
+        <div style="display:flex; align-items:center; justify-content:center; gap:0.6rem; margin-bottom:0.5rem;">
+          <span style="font-size:1.4rem; line-height:1;">🌿</span>
+          <p style="font-family:'Playfair Display',serif; font-weight:600; font-size:1.05rem; color:#fff; margin:0;">Download Your Reflections</p>
+        </div>
+        <p style="font-size:0.85rem; color:rgba(255,255,255,0.55); line-height:1.6; margin-bottom:1.25rem;">A formatted record of everything you wrote today — yours to keep.</p>
+        <button onclick="downloadPDF()" style="display:block; width:100%; background:var(--ember); color:#fff; font-family:'DM Sans',sans-serif; font-weight:600; font-size:0.95rem; letter-spacing:0.03em; padding:1rem 1.5rem; border-radius:10px; border:none; cursor:pointer;" onmouseover="this.style.background='#a84a20'" onmouseout="this.style.background='var(--ember)'">Download PDF →</button>
+        <p style="margin-top:0.85rem; font-size:0.75rem; font-style:italic; color:rgba(255,255,255,0.3);">Saves to your device. Private — nothing leaves your browser.</p>
+      </div>
+
+      <!-- ── TEA WITH I'SHA ── -->
+      <div style="margin-top:1.25rem; padding:2rem 1.5rem; background:linear-gradient(135deg, #3a2010, #2a1a0e); border:1px solid rgba(201,168,76,0.25); border-radius:16px; text-align:center; position:relative; overflow:hidden;">
+        <div style="position:absolute; top:-10px; right:16px; font-size:5rem; opacity:0.07; pointer-events:none; user-select:none;">🍵</div>
+        <p style="font-size:0.68rem; letter-spacing:0.22em; text-transform:uppercase; color:var(--ember); margin-bottom:0.65rem; font-weight:500;">You Don't Have to Do This Alone</p>
+        <h3 style="font-family:'Playfair Display',serif; font-style:italic; font-size:1.45rem; color:#fff; margin-bottom:0.85rem;">Come Have Tea With Us</h3>
+        <p style="font-size:0.88rem; color:rgba(255,255,255,0.6); line-height:1.75; margin-bottom:1.5rem;">Pull up a chair. Ask the real questions. Be witnessed.</p>
+        <a href="https://www.unbrokenpathways.org/isha-gaines-med-lpc" target="_blank" style="display:inline-block; background:var(--gold); color:#1a2e1a; font-family:'DM Sans',sans-serif; font-weight:700; font-size:0.95rem; letter-spacing:0.06em; padding:16px 40px; border-radius:50px; text-decoration:none; box-shadow:0 4px 20px rgba(201,168,76,0.3);">Let's Rise Together →</a>
+        <p style="margin-top:1rem; font-size:0.78rem; font-style:italic; color:rgba(255,255,255,0.35);">Sessions are intimate by design. Come as you are.</p>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<script>
+let currentScreen = 1;
+const TOTAL_SCREENS = 14;
+
+function advance(n) {
+  const current = document.getElementById('screen' + currentScreen);
+  const next = document.getElementById('screen' + n);
+  if (!next) return;
+  current.classList.remove('active');
+  next.classList.add('active');
+  currentScreen = n;
+  updateProgress(n);
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function updateProgress(step) {
+  const pct = Math.round(((step - 1) / (TOTAL_SCREENS - 1)) * 100);
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('stepLabel').textContent = 'Step ' + step + ' of ' + TOTAL_SCREENS;
+  document.getElementById('stepPct').textContent = pct + '%';
+}
+
+function toggleRecognition(card) { card.classList.toggle('selected'); }
+function toggleState(btn) { btn.classList.toggle('selected'); }
+
+const stageCounts = {1:0, 2:0, 3:0, 4:0, 5:0};
+const stageNotes = {
+  1: ['Good. Two more.', 'One more.', "That's all three. Let's go deeper."],
+  2: ['Good. Two more sips.', 'One more.', "That's three. Feel that settle."],
+  3: ['Good. Two more rounds.', 'One more.', "That's three. Notice any shift."],
+  4: ['Good. Two more.', 'One more hum or sigh.', "That's three. Feel your chest."],
+  5: ['Good. Name two more things.', 'One more.', "That's three. You are here. You are safe."]
+};
+
+function markStageBreath(stage, n) {
+  if (n !== stageCounts[stage] + 1) return;
+  stageCounts[stage] = n;
+  const el = document.getElementById('s' + stage + 'b' + n);
+  el.classList.add('done');
+  el.textContent = '✦';
+  document.getElementById('s' + stage + 'note').textContent = stageNotes[stage][n - 1];
+}
+
+let microCount = 0;
+function markMicroBreath(n) {
+  if (n !== microCount + 1) return;
+  microCount = n;
+  const el = document.getElementById('mb' + n);
+  el.classList.add('done');
+  el.textContent = '✦';
+  const notes = ['Good. Two more.', 'One more.', "That's all three. You can carry this forward."];
+  document.getElementById('mbNote').textContent = notes[n - 1];
+}
+
+function downloadPDF() {
+  const fields = [
+    { label: 'My Offer', id: 'ws1_offer' },
+    { label: 'The Gap', id: 'ws1_gap' },
+    { label: 'The Person Who Needs This', id: 'ws1_person' },
+    { label: 'My Thought Loop', id: 's1_reflect' },
+    { label: 'What I Am Trying to Control', id: 's1_control' },
+    { label: 'What My Stress Is Standing Guard Over', id: 's2_reflect' },
+    { label: 'Where My Body Is Storing This Weight', id: 's3_reflect' },
+    { label: 'What I Have Not Had Space to Release', id: 's4_reflect' },
+    { label: 'Whose Story I Am Carrying', id: 's5_reflect' },
+    { label: 'Whose Voice Is in That Loop', id: 's5_voice' },
+    { label: 'What I Just Learned', id: 'ws1_integration' },
+    { label: 'People Who Are Looking for Me', id: 'ws1_people' },
+    { label: 'My New Thought Loop', id: 'ws1_new_loop' },
+    { label: 'My Micro-Action', id: 'ws1_action' },
+  ];
+
+  let content = `
+    <html><head><style>
+      body { font-family: Georgia, serif; max-width: 600px; margin: 40px auto; color: #2c2c2c; line-height: 1.7; }
+      h1 { font-size: 1.5rem; color: #1a2e1a; margin-bottom: 0.25rem; }
+      .subtitle { font-size: 0.85rem; color: #6b6b6b; margin-bottom: 2rem; font-style: italic; }
+      .entry { margin-bottom: 1.75rem; border-left: 3px solid #c9a84c; padding-left: 1rem; }
+      .label { font-size: 0.7rem; font-weight: bold; letter-spacing: 0.1em; text-transform: uppercase; color: #8b4513; margin-bottom: 0.35rem; }
+      .value { font-size: 0.95rem; color: #2c2c2c; white-space: pre-wrap; }
+      .empty { color: #b0a898; font-style: italic; }
+      .footer { margin-top: 3rem; font-size: 0.8rem; color: #b0a898; font-style: italic; border-top: 1px solid #e0d8cc; padding-top: 1rem; }
+    </style></head><body>
+    <h1>Interrupting the Spiral</h1>
+    <div class="subtitle">The Liberation Series · Your Reflections · ${new Date().toLocaleDateString('en-US', {year:'numeric',month:'long',day:'numeric'})}</div>
+  `;
+
+  fields.forEach(f => {
+    const el = document.getElementById(f.id);
+    const val = el ? el.value.trim() : '';
+    content += `<div class="entry">
+      <div class="label">${f.label}</div>
+      <div class="value ${val ? '' : 'empty'}">${val || 'Not completed'}</div>
+    </div>`;
+  });
+
+  content += `<div class="footer">This reflection is private. Nothing was sent anywhere — it was generated entirely in your browser.</div></body></html>`;
+
+  const blob = new Blob([content], { type: 'text/html' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'interrupting-the-spiral-reflections.html';
+  a.click();
+  URL.revokeObjectURL(url);
+}
+</script>
+</body>
+</html>
