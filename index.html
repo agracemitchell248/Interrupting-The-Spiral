@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Interrupting the Spiral | The Liberation Series</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
@@ -160,6 +160,24 @@ textarea::placeholder { color: #b0a898; font-style: italic; }
   .nav-bar { padding: 1rem 1.25rem; }
   .screen-title { font-size: 1.45rem; }
 }
+
+/* No-scroll layout: the page fits the screen, the card scrolls inside, nav stays pinned */
+html, body { height: 100%; overflow: hidden; }
+body { min-height: 0; height: 100vh; height: 100svh; height: 100dvh; padding: 0.9rem 1rem 0.75rem; justify-content: flex-start; }
+.header { flex-shrink: 0; margin-bottom: 0.7rem; }
+.progress-wrap { flex-shrink: 0; margin-bottom: 0.7rem; }
+.card { flex: 1; min-height: 0; display: flex; flex-direction: column; }
+.screen.active { display: flex; flex-direction: column; flex: 1; min-height: 0; }
+.card-body { flex: 1; min-height: 0; overflow-y: auto; -webkit-overflow-scrolling: touch; }
+.nav-bar { flex-shrink: 0; }
+@media (max-width: 600px) {
+  body { padding: 0.6rem 0.75rem 0.5rem; }
+  .header { margin-bottom: 0.45rem; }
+  .logo { font-size: 1.15rem; }
+  .logo-sub { font-size: 0.62rem; margin-top: 0.1rem; }
+  .progress-wrap { margin-bottom: 0.5rem; }
+  .progress-meta { font-size: 0.68rem; margin-bottom: 0.25rem; }
+}
 </style>
 </head>
 <body>
@@ -186,16 +204,16 @@ textarea::placeholder { color: #b0a898; font-style: italic; }
     <div class="card-body">
       <div class="eyebrow">Welcome</div>
       <h1 class="screen-title">You built these loops to survive.</h1>
-      <p class="screen-desc">In this part of the work, we're moving into your <strong>Cognitive Body</strong> — the part of you that holds your thoughts, your stories, and the mental loops that run in the background while you're trying to build something real.</p>
-      <p class="screen-desc">For a lot of us, the moment we think <em>"I could actually get paid for this,"</em> another voice shows up immediately: <em>"I don't have enough. Enough money, enough followers, enough time."</em></p>
+      <p class="screen-desc">In this part of the work, we're moving into your <strong>Cognitive Body</strong>: the part of you that holds your thoughts, your stories, and the mental loops that run in the background while you're trying to build something real.</p>
+      <p class="screen-desc">For a lot of us, especially as Black and marginalized entrepreneurs, the moment we think <em>"I could actually get paid for this,"</em> another voice shows up immediately: <em>"I don't have enough. Enough money, enough followers, enough time."</em></p>
       <p class="screen-desc">That voice wasn't born in you. It was learned. And it can be interrupted.</p>
       <div class="affirmations">
         <p>✦ &nbsp;This space is entirely yours. Nothing you write here is wrong.</p>
-        <p>✦ &nbsp;You are allowed to feel everything — or nothing. Both are valid.</p>
+        <p>✦ &nbsp;You are allowed to feel everything, or nothing. Both are valid.</p>
         <p>✦ &nbsp;There is no pace you're supposed to be moving at. Your pace is the right pace.</p>
         <p>✦ &nbsp;You can pause, breathe, or step away at any time. This work will be here when you return.</p>
       </div>
-      <p class="screen-desc">We'll begin with a meditation to ground you in your offer and the people who need it — before anything else.</p>
+      <p class="screen-desc">We'll begin with a meditation to ground you in your offer and the people who need it, before anything else.</p>
     </div>
     <div class="nav-bar">
       <span></span>
@@ -208,14 +226,13 @@ textarea::placeholder { color: #b0a898; font-style: italic; }
     <div class="card-body">
       <div class="eyebrow">Opening Practice</div>
       <h1 class="screen-title">What I'm Looking For Is Looking For Me</h1>
-      <p class="screen-desc">Before any worksheet work begins, let I'sha guide you in. This meditation will bring you into body awareness around your main business idea and the people who need it — anchoring the sense that your right-fit clients exist and are already looking for you.</p>
+      <p class="screen-desc">Before any worksheet work begins, let I'sha guide you in. This meditation will bring you into body awareness around your main business idea and the people who need it, anchoring the sense that your right-fit clients exist and are already looking for you.</p>
       <p class="screen-desc">Find somewhere quiet. Let this be the beginning.</p>
 
       <div class="meditation-player">
         <div class="meditation-label">Opening Practice · Begin Here. <em>With I'sha.</em></div>
-        <p class="meditation-desc">Find a comfortable position and let I'sha guide you in. This is your threshold. Cross it slowly.</p>
         <audio controls>
-          <source src="./audio/meditation-what-im-looking-for.m4a" type="audio/mp4">
+          <source src="./audio/meditation-what-im-looking-for.mp3" type="audio/mpeg">
         </audio>
         <p class="meditation-note">Take your time. The worksheets will be here when you return.</p>
       </div>
@@ -224,7 +241,7 @@ textarea::placeholder { color: #b0a898; font-style: italic; }
     </div>
     <div class="nav-bar">
       <button class="btn btn-ghost" onclick="advance(1)">← Back</button>
-      <button class="btn btn-primary" onclick="advance(3)">I&rsquo;ve listened — continue →</button>
+      <button class="btn btn-primary" onclick="advance(3)">I&rsquo;ve listened, continue →</button>
     </div>
   </div>
 
@@ -243,7 +260,7 @@ textarea::placeholder { color: #b0a898; font-style: italic; }
 
       <div class="reflect-block gold">
         <div class="reflect-label">The Gap</div>
-        <p class="reflect-question">The gap this idea fills — what was missing in my old job, workplace, or community — is…</p>
+        <p class="reflect-question">The gap this idea fills (what was missing in my old job, workplace, or community) is…</p>
         <textarea id="ws1_gap" placeholder="What did you notice was broken? What did people need that wasn't there?"></textarea>
       </div>
 
@@ -265,17 +282,17 @@ textarea::placeholder { color: #b0a898; font-style: italic; }
       <div class="eyebrow">The Thought to Trauma Progression</div>
       <h1 class="screen-title">And somewhere in that naming...</h1>
       <p class="screen-desc">You just named your offer, the gap it fills, and the person who needs it. That took something.</p>
-      <p class="screen-desc">And somewhere in that naming — maybe right now — another feeling emerged. Or a thought. Something that showed up the moment you got close to actually claiming this.</p>
+      <p class="screen-desc">And somewhere in that naming, maybe right now, another feeling emerged. Or a thought. Something that showed up the moment you got close to actually claiming this.</p>
 
       <div class="reflect-block">
         <div class="reflect-label">What is happening right now?</div>
-        <p class="reflect-question">Select everything that feels true — even if it doesn't make sense yet.</p>
-        <div class="body-state-grid" style="margin-top:0.75rem;">
+        <p class="reflect-question">Select everything that feels true, even if it doesn't make sense yet.</p>
+        <div class="body-state-grid" id="recognitionGrid" data-req-group=".selected" style="margin-top:0.75rem;">
           <button class="body-state-btn" onclick="toggleState(this)">Shallow breath</button>
           <button class="body-state-btn" onclick="toggleState(this)">&ldquo;What if it doesn&rsquo;t work&rdquo;</button>
           <button class="body-state-btn" onclick="toggleState(this)">Restlessness</button>
           <button class="body-state-btn" onclick="toggleState(this)">Heaviness</button>
-          <button class="body-state-btn" onclick="toggleState(this)">"Who am I to be doing this"</button>
+          <button class="body-state-btn" onclick="toggleState(this)">&ldquo;Who am I to be doing this&rdquo;</button>
           <button class="body-state-btn" onclick="toggleState(this)">Mind tightening</button>
           <button class="body-state-btn" onclick="toggleState(this)">Tension in my neck or jaw</button>
           <button class="body-state-btn" onclick="toggleState(this)">Wanting to withdraw</button>
@@ -287,7 +304,7 @@ textarea::placeholder { color: #b0a898; font-style: italic; }
           <button class="body-state-btn" onclick="toggleState(this)">Hypervigilance</button>
           <button class="body-state-btn" onclick="toggleState(this)">Something I can't name yet</button>
         </div>
-        <p class="body-state-note">Whatever is here belongs here. We're going to move through all of it — one place at a time.</p>
+        <p class="body-state-note">Whatever is here belongs here. We're going to move through all of it, one place at a time.</p>
       </div>
     </div>
     <div class="nav-bar">
@@ -303,8 +320,8 @@ textarea::placeholder { color: #b0a898; font-style: italic; }
       <h1 class="screen-title">The Thought Loop</h1>
       <div class="stage-banner loop">
         <div class="stage-banner-name">The thought keeps circling</div>
-        <div class="stage-banner-time">The loop is early — but it's already in your body</div>
-        <div class="stage-banner-cue">One scarcity sentence starts repeating. Your mind tightens. Breath gets shallow. You feel restless — like you need to do something, fix something, control something right now.</div>
+        <div class="stage-banner-time">The loop is early, but it's already in your body</div>
+        <div class="stage-banner-cue">One scarcity sentence starts repeating. Your mind tightens. Breath gets shallow. You feel restless, like you need to do something, fix something, control something right now.</div>
       </div>
 
       <div class="reflect-block">
@@ -315,7 +332,7 @@ textarea::placeholder { color: #b0a898; font-style: italic; }
 
       <div class="reflect-block">
         <div class="reflect-label">What Are You Trying to Control?</div>
-        <p class="reflect-question">When that thought loops — what is it trying to hold onto or protect? What feels like it would fall apart if you stopped managing it?</p>
+        <p class="reflect-question">When that thought loops, what is it trying to hold onto or protect? What feels like it would fall apart if you stopped managing it?</p>
         <textarea id="s1_control" class="short" placeholder="Take your time. There's no wrong answer here."></textarea>
       </div>
 
@@ -324,8 +341,8 @@ textarea::placeholder { color: #b0a898; font-style: italic; }
       <div class="vagal-ritual">
         <div class="vagal-ritual-eyebrow">Now that you've named it</div>
         <div class="vagal-ritual-title">The Physiological Sigh</div>
-        <p class="vagal-ritual-instruction">Take a double inhale through your nose — two short sniffs in a row — then one long, slow exhale out through your mouth. Tap each circle as you complete a full breath cycle.</p>
-        <p class="vagal-psychoed">When your Cognitive Body is looping, your breath naturally gets shallow and fast — which keeps your nervous system activated. The double inhale fully inflates the lungs and reactivates collapsed alveoli. The long exhale activates the parasympathetic branch of your nervous system and is the fastest known way to lower your heart rate and interrupt a thought spiral in real time.</p>
+        <p class="vagal-ritual-instruction">Take a double inhale through your nose (two short sniffs in a row), then one long, slow exhale out through your mouth. Tap each circle as you complete a full breath cycle.</p>
+        <p class="vagal-psychoed">When your Cognitive Body is looping, your breath naturally gets shallow and fast, which keeps your nervous system activated. The double inhale fully inflates the lungs and reactivates collapsed alveoli. The long exhale activates the parasympathetic branch of your nervous system and is the fastest known way to lower your heart rate and interrupt a thought spiral in real time.</p>
         <div class="breath-circles">
           <div class="breath-circle" id="s1b1" onclick="markStageBreath(1,1)">○</div>
           <div class="breath-circle" id="s1b2" onclick="markStageBreath(1,2)">○</div>
@@ -348,13 +365,13 @@ textarea::placeholder { color: #b0a898; font-style: italic; }
       <div class="stage-banner stress">
         <div class="stage-banner-name">The body starts paying the bill</div>
         <div class="stage-banner-time">The loop has been running for days</div>
-        <div class="stage-banner-cue">The loop keeps running. Your Emotional and Physical Bodies start reacting — tension, headaches, digestive shifts. You're still functioning, but everything costs more than it should.</div>
+        <div class="stage-banner-cue">The loop keeps running. Your Emotional and Physical Bodies start reacting: tension, headaches, digestive shifts. You're still functioning, but everything costs more than it should.</div>
       </div>
 
       <div class="reflect-block">
         <div class="reflect-label">What Is Your Stress Standing Guard Over?</div>
-        <p class="reflect-question">Sometimes what looks like tension is actually protection — a body that learned a long time ago that some emotions weren't safe to feel out loud. What feeling might your stress be standing guard over right now?</p>
-        <textarea id="s2_reflect" placeholder="It doesn't have to be fully formed. Even a direction — toward fear, toward anger, toward grief — is enough."></textarea>
+        <p class="reflect-question">Sometimes what looks like tension is actually protection: a body that learned a long time ago that some emotions weren't safe to feel out loud. What feeling might your stress be standing guard over right now?</p>
+        <textarea id="s2_reflect" placeholder="It doesn't have to be fully formed. Even a direction (toward fear, toward anger, toward grief) is enough."></textarea>
       </div>
 
       <div class="stage-divider"><span>regulation practice</span></div>
@@ -363,7 +380,7 @@ textarea::placeholder { color: #b0a898; font-style: italic; }
         <div class="vagal-ritual-eyebrow">Now that you've named it</div>
         <div class="vagal-ritual-title">A Slow Sip of Cold Water</div>
         <p class="vagal-ritual-instruction">If you have water nearby, take one slow, deliberate sip of cold water. Feel it move down your throat and into your body. Don't rush it. Tap each circle as you complete a slow, conscious sip.</p>
-        <p class="vagal-psychoed">When stress is sustained, your body stays in a mild fight-or-flight state — muscles tense, digestion slows, jaw clenches. Swallowing cold water activates the vagus nerve through the esophagus, triggering a parasympathetic response that gently signals safety. Doing it slowly and deliberately also shifts your attention from the mental loop to a simple, grounding physical sensation — interrupting the stress cycle without pulling you away from your work.</p>
+        <p class="vagal-psychoed">When stress is sustained, your body stays in a mild fight-or-flight state. Muscles tense, digestion slows, jaw clenches. Swallowing cold water activates the vagus nerve through the esophagus, triggering a parasympathetic response that gently signals safety. Doing it slowly and deliberately also shifts your attention from the mental loop to a simple, grounding physical sensation, and that interrupts the stress cycle without pulling you away from your work.</p>
         <div class="breath-circles">
           <div class="breath-circle" id="s2b1" onclick="markStageBreath(2,1)">○</div>
           <div class="breath-circle" id="s2b2" onclick="markStageBreath(2,2)">○</div>
@@ -391,8 +408,8 @@ textarea::placeholder { color: #b0a898; font-style: italic; }
 
       <div class="reflect-block">
         <div class="reflect-label">Where Is Your Body Storing This Weight?</div>
-        <p class="reflect-question">Not what you're thinking — what you're carrying. Where in your body do you feel the heaviness right now, or when you're living in this place?</p>
-        <textarea id="s3_reflect" placeholder="Your chest, your shoulders, behind your eyes, the backs of your legs. Wherever it lives — name it."></textarea>
+        <p class="reflect-question">Not what you're thinking. What you're carrying. Where in your body do you feel the heaviness right now, or when you're living in this place?</p>
+        <textarea id="s3_reflect" placeholder="Your chest, your shoulders, behind your eyes, the backs of your legs. Wherever it lives, name it."></textarea>
       </div>
 
       <div class="stage-divider"><span>regulation practice</span></div>
@@ -400,14 +417,14 @@ textarea::placeholder { color: #b0a898; font-style: italic; }
       <div class="vagal-ritual">
         <div class="vagal-ritual-eyebrow">Now that you've named it</div>
         <div class="vagal-ritual-title">Slow Bilateral Tapping</div>
-        <p class="vagal-ritual-instruction">Place both hands on your thighs. Slowly tap left, right, left, right — alternating, unhurried, about the pace of a slow walk. Tap each circle after you complete a set of eight alternating taps.</p>
-        <p class="vagal-psychoed">Fatigue often means your nervous system has moved into a dorsal vagal shutdown — a freeze response where the body conserves energy by going still and heavy. Gentle bilateral (left-right alternating) stimulation helps move stuck energy through your system without demanding more from an already depleted body. It works on the same principle as EMDR therapy: rhythmic, alternating input helps the nervous system shift out of freeze without overwhelming it further.</p>
+        <p class="vagal-ritual-instruction">Place both hands on your thighs. Slowly tap left, right, left, right. Alternating, unhurried, about the pace of a slow walk. Tap each circle after you complete a set of eight alternating taps.</p>
+        <p class="vagal-psychoed">Fatigue often means your nervous system has moved into a dorsal vagal shutdown, a freeze response where the body conserves energy by going still and heavy. Gentle bilateral (left-right alternating) stimulation helps move stuck energy through your system without demanding more from an already depleted body. It works on the same principle as EMDR therapy: rhythmic, alternating input helps the nervous system shift out of freeze without overwhelming it further.</p>
         <div class="breath-circles">
           <div class="breath-circle" id="s3b1" onclick="markStageBreath(3,1)">○</div>
           <div class="breath-circle" id="s3b2" onclick="markStageBreath(3,2)">○</div>
           <div class="breath-circle" id="s3b3" onclick="markStageBreath(3,3)">○</div>
         </div>
-        <p class="breath-instruction" id="s3note">Left, right, left, right — slow and easy. Eight taps per round. Then tap a circle.</p>
+        <p class="breath-instruction" id="s3note">Left, right, left, right. Slow and easy. Eight taps per round. Then tap a circle.</p>
       </div>
     </div>
     <div class="nav-bar">
@@ -424,12 +441,12 @@ textarea::placeholder { color: #b0a898; font-style: italic; }
       <div class="stage-banner grief">
         <div class="stage-banner-name">The light starts going out</div>
         <div class="stage-banner-time">Grief has been living here for months</div>
-        <div class="stage-banner-cue">Your Emotional and Spiritual Bodies begin to dim. Sadness. Isolation. Numbness. You might stop sharing your ideas — not because they're bad, but because hope has started to feel risky.</div>
+        <div class="stage-banner-cue">Your Emotional and Spiritual Bodies begin to dim. Sadness. Isolation. Numbness. You might stop sharing your ideas, not because they're bad, but because hope has started to feel risky.</div>
       </div>
 
       <div class="reflect-block">
         <div class="reflect-label">What Have You Not Had Space to Release?</div>
-        <p class="reflect-question">What is sitting in your Emotional Body that hasn't had space yet — about the job you lost, the business you're afraid to fully claim, the version of yourself you've been quietly grieving?</p>
+        <p class="reflect-question">What is sitting in your Emotional Body that hasn't had space yet: about the job you lost, the business you're afraid to fully claim, the version of yourself you've been quietly grieving?</p>
         <textarea id="s4_reflect" placeholder="You don't have to have it all figured out. Even a sentence is enough. What hasn't been said?"></textarea>
       </div>
 
@@ -438,8 +455,8 @@ textarea::placeholder { color: #b0a898; font-style: italic; }
       <div class="vagal-ritual">
         <div class="vagal-ritual-eyebrow">Now that you've named it</div>
         <div class="vagal-ritual-title">Hand on Heart · Hum or Sigh</div>
-        <p class="vagal-ritual-instruction">Place one hand gently on your chest. Feel the warmth of your own hand. Then hum softly — just a quiet "mmmmm" — or let out a slow, audible sigh. Let it be small. It's just for you. Tap each circle after each hum or sigh.</p>
-        <p class="vagal-psychoed">Grief lives in the Emotional and Spiritual Bodies, where numbness and disconnection settle in quietly. The vagus nerve runs directly through the throat and vocal cords — humming and sighing create vibration that activates it from the inside, toning it gently without forcing anything open. The warmth of your own hand on your chest signals physical safety to your nervous system. Together, these help bring your Spiritual Body back online on its own terms — one of the oldest forms of self-regulation we know.</p>
+        <p class="vagal-ritual-instruction">Place one hand gently on your chest. Feel the warmth of your own hand. Then hum softly (just a quiet "mmmmm") or let out a slow, audible sigh. Let it be small. It's just for you. Tap each circle after each hum or sigh.</p>
+        <p class="vagal-psychoed">Grief lives in the Emotional and Spiritual Bodies, where numbness and disconnection settle in quietly. The vagus nerve runs directly through the throat and vocal cords. Humming and sighing create vibration that activates it from the inside, toning it gently without forcing anything open. The warmth of your own hand on your chest signals physical safety to your nervous system. Together, these help bring your Spiritual Body back online on its own terms. It is one of the oldest forms of self-regulation we know.</p>
         <div class="breath-circles">
           <div class="breath-circle" id="s4b1" onclick="markStageBreath(4,1)">○</div>
           <div class="breath-circle" id="s4b2" onclick="markStageBreath(4,2)">○</div>
@@ -462,18 +479,18 @@ textarea::placeholder { color: #b0a898; font-style: italic; }
       <div class="stage-banner trauma">
         <div class="stage-banner-name">Survival became the only option</div>
         <div class="stage-banner-time">The body has been carrying this for years</div>
-        <div class="stage-banner-cue">All Five Bodies shift into survival. The thought loop becomes a reflex. Your business itself can start to feel like a source of retraumatization — every slow week, every unanswered message, triggering the same old fear.</div>
+        <div class="stage-banner-cue">All Five Bodies shift into survival. The thought loop becomes a reflex. Your business itself can start to feel like a source of retraumatization: every slow week, every unanswered message, triggering the same old fear.</div>
       </div>
 
       <div class="reflect-block">
         <div class="reflect-label">Whose Story Are You Carrying Besides Your Own?</div>
-        <p class="reflect-question">The fear that lives in your Ancestral Body is often older than you. When your business triggers survival mode — who else's voice is in that room with you?</p>
+        <p class="reflect-question">The fear that lives in your Ancestral Body is often older than you. When your business triggers survival mode, who else's voice is in that room with you?</p>
         <textarea id="s5_reflect" placeholder="A parent's fear about money. A community's history of being shut out. Something inherited that was never yours to carry alone."></textarea>
       </div>
 
       <div class="reflect-block">
         <div class="reflect-label">Whose Voice Is in That Loop?</div>
-        <p class="reflect-question">The scarcity thought you named — how long has it been with you? Does it sound like your voice, or did someone else put it there first?</p>
+        <p class="reflect-question">The scarcity thought you named: how long has it been with you? Does it sound like your voice, or did someone else put it there first?</p>
         <textarea id="s5_voice" class="short" placeholder="You don't have to trace the whole history. Just notice what comes up."></textarea>
       </div>
 
@@ -482,8 +499,8 @@ textarea::placeholder { color: #b0a898; font-style: italic; }
       <div class="vagal-ritual">
         <div class="vagal-ritual-eyebrow">Now that you've named it</div>
         <div class="vagal-ritual-title">The Orienting Response</div>
-        <p class="vagal-ritual-instruction">Slowly turn your head and look around the room. Not scanning for threats — looking with soft eyes, like you're seeing this space for the first time. Silently name five things you can actually see right now. Tap each circle as you name one.</p>
-        <p class="vagal-psychoed">When trauma is active, your nervous system is convinced the danger is still present — even when it isn't. The orienting response is one of the most powerful tools in somatic trauma work: by deliberately looking around and naming what you see, you send a direct signal to your brainstem that says "I am here, I am in this room, the threat is not in front of me right now." It interrupts the fear reflex not by thinking differently, but by giving your survival system new, accurate sensory information about where you actually are.</p>
+        <p class="vagal-ritual-instruction">Slowly turn your head and look around the room. Not scanning for threats. Looking with soft eyes, like you're seeing this space for the first time. Silently name five things you can actually see right now. Tap each circle as you name one.</p>
+        <p class="vagal-psychoed">When trauma is active, your nervous system is convinced the danger is still present, even when it isn't. The orienting response is one of the most powerful tools in somatic trauma work: by deliberately looking around and naming what you see, you send a direct signal to your brainstem that says "I am here, I am in this room, the threat is not in front of me right now." It interrupts the fear reflex not by thinking differently, but by giving your survival system new, accurate sensory information about where you actually are.</p>
         <div class="breath-circles">
           <div class="breath-circle" id="s5b1" onclick="markStageBreath(5,1)">○</div>
           <div class="breath-circle" id="s5b2" onclick="markStageBreath(5,2)">○</div>
@@ -508,8 +525,8 @@ textarea::placeholder { color: #b0a898; font-style: italic; }
       <blockquote class="pull-quote">"You built these loops to survive systems that were never designed for your thriving."</blockquote>
 
       <div class="reflect-block">
-        <div class="reflect-label">Where Do You Recognize Yourself?</div>
-        <p class="reflect-question">Looking back at these five places — where do you most see yourself? What does it tell you about what your body has been quietly carrying while you've been trying to build?</p>
+        <div class="reflect-label">What Do You Notice?</div>
+        <p class="reflect-question">Looking back at these five places, what do you notice about how quickly a business thought can turn into a full-body pattern? And where do you most see yourself?</p>
         <textarea id="ws1_integration" placeholder="It might be one place. It might be all five. There's no wrong answer."></textarea>
       </div>
     </div>
@@ -531,14 +548,14 @@ textarea::placeholder { color: #b0a898; font-style: italic; }
       <div class="reflect-block sage">
         <div class="reflect-label">Even When I Can't See Them Yet</div>
         <p class="reflect-question">I believe there are people out there looking for…</p>
-        <textarea id="ws1_people" placeholder="Describe what they're searching for — in their body, in their work, in their life."></textarea>
+        <textarea id="ws1_people" placeholder="Describe what they're searching for: in their body, in their work, in their life."></textarea>
       </div>
 
       <div class="divider"></div>
 
-      <p class="screen-desc" style="font-size:0.9rem; margin-bottom:0.5rem;">When you try on the thought <em>"What I'm looking for is looking for me,"</em> what does your body do? Select everything that's true — including the harder ones.</p>
+      <p class="screen-desc" style="font-size:0.9rem; margin-bottom:0.5rem;">When you try on the thought <em>"What I'm looking for is looking for me,"</em> what does your body do? Select everything that's true, including the harder ones.</p>
 
-      <div class="body-state-grid">
+      <div class="body-state-grid" id="feelGrid" data-req-group=".selected">
         <button class="body-state-btn" onclick="toggleState(this)">Calmer</button>
         <button class="body-state-btn" onclick="toggleState(this)">Tighter</button>
         <button class="body-state-btn" onclick="toggleState(this)">Hopeful</button>
@@ -548,6 +565,7 @@ textarea::placeholder { color: #b0a898; font-style: italic; }
         <button class="body-state-btn" onclick="toggleState(this)">Skeptical</button>
         <button class="body-state-btn" onclick="toggleState(this)">Something softening</button>
       </div>
+      <textarea id="ws1_feel_other" class="short" style="margin-top:0.75rem;" placeholder="Something else? Name it here, in your own words."></textarea>
       <p class="body-state-note">Whatever you selected is the right answer. Tighter and resistant are just as important to honor as hopeful and calm. Your body is telling you something true.</p>
 
       <div class="reflect-block sage" style="margin-top:1.25rem;">
@@ -578,10 +596,10 @@ textarea::placeholder { color: #b0a898; font-style: italic; }
       <div class="divider"></div>
 
       <div class="vagal-ritual">
-        <div class="vagal-ritual-eyebrow">Before you move on</div>
-        <div class="vagal-ritual-title">Three Slow Breaths</div>
-        <p class="vagal-ritual-instruction">You've done real cognitive work here. Before you continue, take three slow, full breaths. Tap each circle as you exhale.</p>
-        <p class="vagal-psychoed">Intentional slow breathing after reflective work helps your nervous system consolidate what your body just processed. It signals that the work is complete — not abandoned, not interrupted. Just done, for now. You can close this and come back. It will all still be here.</p>
+        <div class="vagal-ritual-eyebrow">Before you take this step</div>
+        <div class="vagal-ritual-title">Pause, Notice, Three Slow Breaths</div>
+        <p class="vagal-ritual-instruction">Before you take this action, pause. Notice your Thought Loop. Is it running right now? Then take three slow breaths to support your Cognitive Body. Tap each circle as you exhale. Come back to this pause again right before you actually take the step.</p>
+        <p class="vagal-psychoed">Noticing the loop before you act gives your nervous system a choice it didn't have before. Slow breathing tells your body there is no emergency, so the step you take comes from a regulated place, not from the spiral. Same action, different ground under it.</p>
         <div class="breath-circles">
           <div class="breath-circle" id="mb1" onclick="markMicroBreath(1)">○</div>
           <div class="breath-circle" id="mb2" onclick="markMicroBreath(2)">○</div>
@@ -605,7 +623,7 @@ textarea::placeholder { color: #b0a898; font-style: italic; }
       <p class="screen-desc" style="text-align:center;">That took something real.</p>
       <div class="bridge-card">
         <div class="bridge-card-title">What comes next is different.</div>
-        <p class="bridge-card-desc">The work you just did was inward — in your Cognitive Body, tracing what lives there. The next part turns you gently outward: toward the people whose bodies are already asking the questions your business is built to answer.</p>
+        <p class="bridge-card-desc">The work you just did was inward, in your Cognitive Body, tracing what lives there. The next part turns you gently outward: toward the people whose bodies are already asking the questions your business is built to answer.</p>
         <p class="bridge-card-desc" style="margin-top:0.75rem;">You're not begging for attention. You're becoming findable. When you're ready, that's where we're going.</p>
       </div>
       <p class="screen-desc" style="font-size:0.88rem; color:var(--mid); margin-top:1rem;">Come back when your body is ready. The next part will be here.</p>
@@ -631,7 +649,7 @@ textarea::placeholder { color: #b0a898; font-style: italic; }
         <div style="display:flex; flex-direction:column; gap:0.6rem;">
           <div style="display:flex; align-items:flex-start; gap:0.6rem; font-size:0.9rem; color:var(--charcoal); line-height:1.5;"><span style="color:var(--sage); flex-shrink:0; margin-top:1px;">🌿</span>Grounded yourself in your offer, the gap it fills, and the person who needs it</div>
           <div style="display:flex; align-items:flex-start; gap:0.6rem; font-size:0.9rem; color:var(--charcoal); line-height:1.5;"><span style="color:var(--sage); flex-shrink:0; margin-top:1px;">🌿</span>Named what your body was already carrying before you got here</div>
-          <div style="display:flex; align-items:flex-start; gap:0.6rem; font-size:0.9rem; color:var(--charcoal); line-height:1.5;"><span style="color:var(--sage); flex-shrink:0; margin-top:1px;">🌿</span>Moved through five places the scarcity loop can live — without rushing</div>
+          <div style="display:flex; align-items:flex-start; gap:0.6rem; font-size:0.9rem; color:var(--charcoal); line-height:1.5;"><span style="color:var(--sage); flex-shrink:0; margin-top:1px;">🌿</span>Moved through five places the scarcity loop can live, without rushing</div>
           <div style="display:flex; align-items:flex-start; gap:0.6rem; font-size:0.9rem; color:var(--charcoal); line-height:1.5;"><span style="color:var(--sage); flex-shrink:0; margin-top:1px;">🌿</span>Did a somatic regulation practice for each place you recognized</div>
           <div style="display:flex; align-items:flex-start; gap:0.6rem; font-size:0.9rem; color:var(--charcoal); line-height:1.5;"><span style="color:var(--sage); flex-shrink:0; margin-top:1px;">🌿</span>Practiced a new thought loop in your own words</div>
           <div style="display:flex; align-items:flex-start; gap:0.6rem; font-size:0.9rem; color:var(--charcoal); line-height:1.5;"><span style="color:var(--sage); flex-shrink:0; margin-top:1px;">🌿</span>Chose one grounded action from a regulated place</div>
@@ -644,9 +662,9 @@ textarea::placeholder { color: #b0a898; font-style: italic; }
           <span style="font-size:1.4rem; line-height:1;">🌿</span>
           <p style="font-family:'Playfair Display',serif; font-weight:600; font-size:1.05rem; color:#fff; margin:0;">Download Your Reflections</p>
         </div>
-        <p style="font-size:0.85rem; color:rgba(255,255,255,0.55); line-height:1.6; margin-bottom:1.25rem;">A formatted record of everything you wrote today — yours to keep.</p>
-        <button onclick="downloadPDF()" style="display:block; width:100%; background:var(--ember); color:#fff; font-family:'DM Sans',sans-serif; font-weight:600; font-size:0.95rem; letter-spacing:0.03em; padding:1rem 1.5rem; border-radius:10px; border:none; cursor:pointer;" onmouseover="this.style.background='#a84a20'" onmouseout="this.style.background='var(--ember)'">Download PDF →</button>
-        <p style="margin-top:0.85rem; font-size:0.75rem; font-style:italic; color:rgba(255,255,255,0.3);">Saves to your device. Private — nothing leaves your browser.</p>
+        <p style="font-size:0.85rem; color:rgba(255,255,255,0.55); line-height:1.6; margin-bottom:1.25rem;">A formatted record of everything you wrote today, yours to keep.</p>
+        <button onclick="downloadPDF()" style="display:block; width:100%; background:var(--ember); color:#fff; font-family:'DM Sans',sans-serif; font-weight:600; font-size:0.95rem; letter-spacing:0.03em; padding:1rem 1.5rem; border-radius:10px; border:none; cursor:pointer;" onmouseover="this.style.background='#a84a20'" onmouseout="this.style.background='var(--ember)'">Download My Reflections →</button>
+        <p style="margin-top:0.85rem; font-size:0.75rem; font-style:italic; color:rgba(255,255,255,0.3);">Saves to your device. Private. Nothing leaves your browser.</p>
       </div>
 
       <!-- ── TEA WITH I'SHA ── -->
@@ -677,6 +695,7 @@ function advance(n) {
   currentScreen = n;
   updateProgress(n);
   window.scrollTo({ top: 0, behavior: 'smooth' });
+  const body = next.querySelector('.card-body'); if (body) body.scrollTop = 0;
 }
 
 function updateProgress(step) {
@@ -723,6 +742,7 @@ function downloadPDF() {
     { label: 'My Offer', id: 'ws1_offer' },
     { label: 'The Gap', id: 'ws1_gap' },
     { label: 'The Person Who Needs This', id: 'ws1_person' },
+    { label: 'What Showed Up in My Body', grid: 'recognitionGrid' },
     { label: 'My Thought Loop', id: 's1_reflect' },
     { label: 'What I Am Trying to Control', id: 's1_control' },
     { label: 'What My Stress Is Standing Guard Over', id: 's2_reflect' },
@@ -730,8 +750,9 @@ function downloadPDF() {
     { label: 'What I Have Not Had Space to Release', id: 's4_reflect' },
     { label: 'Whose Story I Am Carrying', id: 's5_reflect' },
     { label: 'Whose Voice Is in That Loop', id: 's5_voice' },
-    { label: 'What I Just Learned', id: 'ws1_integration' },
+    { label: 'What I Notice About the Progression', id: 'ws1_integration' },
     { label: 'People Who Are Looking for Me', id: 'ws1_people' },
+    { label: 'How My Body Responded to the New Thought', grid: 'feelGrid', extra: 'ws1_feel_other' },
     { label: 'My New Thought Loop', id: 'ws1_new_loop' },
     { label: 'My Micro-Action', id: 'ws1_action' },
   ];
@@ -751,16 +772,25 @@ function downloadPDF() {
     <div class="subtitle">The Liberation Series · Your Reflections · ${new Date().toLocaleDateString('en-US', {year:'numeric',month:'long',day:'numeric'})}</div>
   `;
 
+  const esc = t => t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
   fields.forEach(f => {
-    const el = document.getElementById(f.id);
-    const val = el ? el.value.trim() : '';
+    let val = '';
+    if (f.grid) {
+      const picks = Array.from(document.querySelectorAll('#' + f.grid + ' .body-state-btn.selected')).map(b => b.textContent.trim());
+      const other = f.extra ? (document.getElementById(f.extra) || {value:''}).value.trim() : '';
+      if (other) picks.push(other);
+      val = esc(picks.join(', '));
+    } else {
+      const el = document.getElementById(f.id);
+      val = el ? esc(el.value.trim()) : '';
+    }
     content += `<div class="entry">
       <div class="label">${f.label}</div>
       <div class="value ${val ? '' : 'empty'}">${val || 'Not completed'}</div>
     </div>`;
   });
 
-  content += `<div class="footer">This reflection is private. Nothing was sent anywhere — it was generated entirely in your browser.</div></body></html>`;
+  content += `<div class="footer">This reflection is private. Nothing was sent anywhere. It was generated entirely in your browser.</div></body></html>`;
 
   const blob = new Blob([content], { type: 'text/html' });
   const url = URL.createObjectURL(blob);
@@ -770,6 +800,197 @@ function downloadPDF() {
   a.click();
   URL.revokeObjectURL(url);
 }
+</script>
+<style>
+/* Required-answer guard */
+.req-missing { outline: 2px solid #c0392b !important; outline-offset: 2px; border-radius: 8px; }
+.req-msg { display: none; flex-shrink: 0; margin: 0 1rem 0.45rem; padding: 0.5rem 0.75rem; border-radius: 8px; background: #fdf0ef; border: 1px solid #e8b4b0; color: #a93226; font-family: inherit; font-size: 0.74rem; line-height: 1.35; text-align: left; }
+.req-msg.show { display: block; }
+.req-locked { opacity: 0.55; }
+</style>
+<script>
+/* Required-answer guard: the forward/submit button only works once every
+   visible question in the current screen is answered.
+   - textareas, text/email inputs and selects must be filled
+   - radio groups need a choice; sliders must be moved or tapped
+   - [data-req-group="<selector>"] needs at least one matching child (chips, checkboxes, pips)
+   - [data-req-custom="<name>"] uses window.REQ_CUSTOM[name]()
+   - [data-optional] opts a field out (an optional email must still be valid if filled)
+   - [data-req-always] keeps a field required while hidden (e.g. one-at-a-time questions)
+   - [data-req-scope] limits an inner "Next" button to its own block
+   - [data-req-final] on a submit button re-checks every screen */
+(function () {
+  var CFG = Object.assign({
+    screens: '.screen',
+    active: '.screen.active',
+    forward: '.nav-bar .btn-primary',
+    msg: 'Please answer every question on this screen before continuing.'
+  }, window.REQ_CONFIG || {});
+  var CUSTOM = window.REQ_CUSTOM || {};
+  var EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  var shown = [];
+
+  function hiddenIn(node, root) {
+    for (var n = node; n && n !== root; n = n.parentElement) {
+      if (getComputedStyle(n).display === 'none') return true;
+    }
+    return false;
+  }
+  function skip(el, root) {
+    if (el.closest('[data-optional]')) return true;
+    if (el.closest('[data-req-always]')) return false;
+    return hiddenIn(el.closest('label') || el, root);
+  }
+  function filled(el) {
+    if (el.tagName === 'SELECT') return !!el.value;
+    var v = el.value.trim();
+    if (!v) return false;
+    return el.type !== 'email' || EMAIL_RE.test(v);
+  }
+
+  function requirements(root) {
+    var items = [];
+    root.querySelectorAll('textarea, input[type="text"], input[type="email"], select').forEach(function (el) {
+      if (el.type === 'email' && el.closest('[data-optional]') && !hiddenIn(el, root)) {
+        items.push({ mark: el, ok: function () { return !el.value.trim() || EMAIL_RE.test(el.value.trim()); } });
+        return;
+      }
+      if (skip(el, root)) return;
+      items.push({ mark: el, ok: function () { return filled(el); } });
+    });
+    var radios = {};
+    root.querySelectorAll('input[type="radio"][name]').forEach(function (el) {
+      if (skip(el, root) || radios[el.name]) return;
+      radios[el.name] = true;
+      var name = el.name;
+      var label = el.closest('label') || el;
+      items.push({
+        mark: label.parentElement || label,
+        ok: function () { return !!root.querySelector('input[type="radio"][name="' + CSS.escape(name) + '"]:checked'); }
+      });
+    });
+    root.querySelectorAll('input[type="range"]').forEach(function (el) {
+      if (skip(el, root)) return;
+      items.push({ mark: el.parentElement, ok: function () { return el.dataset.touched === '1'; } });
+    });
+    root.querySelectorAll('[data-req-group]').forEach(function (el) {
+      if (el.closest('[data-optional]') || (!el.closest('[data-req-always]') && hiddenIn(el, root))) return;
+      var sel = el.getAttribute('data-req-group');
+      items.push({ mark: el, ok: function () { return !!el.querySelector(sel); } });
+    });
+    root.querySelectorAll('[data-req-custom]').forEach(function (el) {
+      if (hiddenIn(el, root)) return;
+      var fn = CUSTOM[el.getAttribute('data-req-custom')];
+      if (fn) items.push({ mark: el, ok: function () { return !!fn(el); } });
+    });
+    return items;
+  }
+  function missing(root) {
+    return requirements(root).filter(function (r) { return !r.ok(); });
+  }
+
+  function activeScreen() { return document.querySelector(CFG.active); }
+  function scopeFor(btn) {
+    return btn.closest('[data-req-scope]') || btn.closest(CFG.screens) || activeScreen();
+  }
+  function msgBox(btn) {
+    var host = btn.closest('[data-req-scope]') ? btn : (btn.closest('.nav-bar, .nav') || btn);
+    var prev = host.previousElementSibling;
+    if (prev && prev.classList.contains('req-msg')) return prev;
+    var box = document.createElement('div');
+    box.className = 'req-msg';
+    box.setAttribute('role', 'alert');
+    host.parentNode.insertBefore(box, host);
+    return box;
+  }
+  function clearShown() {
+    shown.forEach(function (r) { r.mark.classList.remove('req-missing'); });
+    shown = [];
+  }
+
+  function block(btn, list, text) {
+    if (list.every(function (r) { return r.mark.matches('input[type="email"]'); })) {
+      text = 'Please enter a valid email address' + (list[0].mark.closest('[data-optional]') ? ', or leave it blank.' : '.');
+    }
+    clearShown();
+    list.forEach(function (r) { r.mark.classList.add('req-missing'); });
+    shown = list;
+    var box = msgBox(btn);
+    box.textContent = text;
+    box.classList.add('show');
+    var first = list[0].mark;
+    if (first.getClientRects().length) {
+      first.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      if (first.matches('textarea, input, select')) first.focus({ preventScroll: true });
+    }
+  }
+
+  document.addEventListener('click', function (e) {
+    var btn = e.target.closest(CFG.forward + ', .question-next, [data-req-final]');
+    if (!btn || btn.disabled) return;
+    var screen = activeScreen();
+    if (!screen) return;
+    var inScreen = screen.contains(btn);
+    if (!inScreen && !btn.matches(CFG.forward)) return;
+
+    if (btn.hasAttribute('data-req-final')) {
+      var all = document.querySelectorAll(CFG.screens);
+      for (var i = 0; i < all.length; i++) {
+        var gaps = missing(all[i]);
+        if (!gaps.length) continue;
+        e.preventDefault(); e.stopImmediatePropagation();
+        if (all[i] === screen) block(btn, gaps, screen.getAttribute('data-req-msg') || CFG.msg);
+        else block(btn, gaps, 'Step ' + (i + 1) + ' still has unanswered questions. Please go back and complete it before submitting.');
+        return;
+      }
+      return;
+    }
+
+    var scope = inScreen ? scopeFor(btn) : screen;
+    var gaps = missing(scope);
+    if (!gaps.length) return;
+    e.preventDefault(); e.stopImmediatePropagation();
+    block(btn, gaps, scope.getAttribute('data-req-msg') || CFG.msg);
+  }, true);
+
+  function refresh() {
+    if (shown.length) {
+      shown = shown.filter(function (r) {
+        if (r.ok()) { r.mark.classList.remove('req-missing'); return false; }
+        return true;
+      });
+      if (!shown.length) document.querySelectorAll('.req-msg.show').forEach(function (b) { b.classList.remove('show'); });
+    }
+    var screen = activeScreen();
+    document.querySelectorAll('.req-locked').forEach(function (b) { b.classList.remove('req-locked'); });
+    if (!screen) return;
+    var btns = Array.prototype.slice.call(screen.querySelectorAll(CFG.forward + ', .question-next'));
+    document.querySelectorAll(CFG.forward).forEach(function (b) { if (!b.closest(CFG.screens) && btns.indexOf(b) < 0) btns.push(b); });
+    btns.forEach(function (b) {
+      var scope = screen.contains(b) ? scopeFor(b) : screen;
+      if (missing(scope).length) b.classList.add('req-locked');
+    });
+  }
+  function later() { setTimeout(refresh, 0); }
+
+  function touch(e) {
+    if (e.target.matches && e.target.matches('input[type="range"]')) e.target.dataset.touched = '1';
+  }
+  document.addEventListener('pointerdown', touch, true);
+  document.addEventListener('keydown', touch, true);
+  document.addEventListener('input', function (e) { touch(e); later(); }, true);
+  document.addEventListener('change', later, true);
+  document.addEventListener('click', function (e) {
+    // a new screen should start without stale warnings
+    if (e.target.closest('.btn-ghost, #btn-back')) {
+      clearShown();
+      document.querySelectorAll('.req-msg.show').forEach(function (b) { b.classList.remove('show'); });
+    }
+    later();
+  });
+  document.addEventListener('keyup', later);
+  refresh();
+})();
 </script>
 </body>
 </html>
